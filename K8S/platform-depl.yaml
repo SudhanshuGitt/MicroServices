@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind : Deployment
+metadata:
+  name: platform-depl
+spec:
+  replicas: 1 # it will make sure atleast one replica of container is always running even if we delete it will recreate
+  selector:
+    matchLabels:
+      app: paltformservice
+  template:
+    metadata:
+      labels:
+        app: paltformservice
+    spec:
+      containers:
+        - name: paltformservice
+          image: sudhanshudocker1195/platformservice:latest
