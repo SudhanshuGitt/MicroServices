@@ -5,11 +5,6 @@ VisualStudioVersion = 16.0.33927.289
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlatformService", "PlatformService\PlatformService.csproj", "{871AE3D9-DB73-4DA0-8976-322B3A0181A8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{4DAAF4A0-52BB-4DA8-B8E7-F8391E907C1A}"
-	ProjectSection(SolutionItems) = preProject
-		K8S\platform-depl.yaml = K8S\platform-depl.yaml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
