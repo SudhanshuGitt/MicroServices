@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PlatformService.Data;
 using PlatformService.Dtos;
 using PlatformService.Models;
+using PlatformService.SyncDataServices.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,13 @@ namespace PlatformService.Controllers
     {
         private readonly IPlatformRepo _platformRepo;
         private readonly IMapper _mapper;
+        private readonly ICommandDataClient _commandDataClient;
 
-        public PlatformsController(IPlatformRepo platformRepo, IMapper mapper)
+        public PlatformsController(IPlatformRepo platformRepo, IMapper mapper, ICommandDataClient commandDataClient)
         {
             _platformRepo = platformRepo;
             _mapper = mapper;
+            _commandDataClient = commandDataClient;
         }
 
         [HttpGet]
@@ -48,19 +51,30 @@ namespace PlatformService.Controllers
             }
             else
             {
-                return BadRequest("Id is not valid");
+                return BadRequest("Id is not valid");   
             }
 
         }
 
         [HttpPost]
-        public ActionResult<PlatformReadDto> CreatePlatform(PlatformCreateDto platformCreateDto)
+        public async Task<ActionResult<PlatformReadDto>> CreatePlatform(PlatformCreateDto platformCreateDto)
         {
             var platform = _mapper.Map<Platform>(platformCreateDto);
             _platformRepo.CreatePlatform(platform);
             _platformRepo.SaveChanges();
 
             var platformReadDto = _mapper.Map<PlatformReadDto>(platform);
+
+            try
+            {
+                await _commandDataClient.SendPlatformtoCommand(platformReadDto);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Could not send synchronously: {ex.Message}");
+            }
+
             return CreatedAtRoute(nameof(GetPlatformById), new { id = platformReadDto.Id }, platformReadDto);
         }
 

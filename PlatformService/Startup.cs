@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PlatformService.Data;
+using PlatformService.SyncDataServices.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,9 @@ namespace PlatformService
         {
             services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("ImMem"));
             services.AddScoped<IPlatformRepo, PlatformRepo>();
+
+            // http client making use of client factory
+            services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
