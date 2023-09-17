@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind : Deployment
+metadata:
+  name: command-depl
+spec:
+  replicas: 1 # it will make sure atleast one replica of container is always running even if we delete it will recreate
+  selector:
+    matchLabels:
+      app: commandservice
+  template:
+    metadata:
+      labels:
+        app: commandservice
+    spec:
+      containers:
+        - name: commandservice
+          image: sudhanshudocker1195/commandservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: command-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: commandservice
+  ports:
+  - name: commandservice
+    protocol: TCP
+    port: 80
+    targetPort: 80

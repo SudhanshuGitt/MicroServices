@@ -5,9 +5,9 @@ metadata:
 spec:
   type: NodePort
   selector: 
-    app: paltformservice
+    app: platformservice
   ports:
-    - name: paltformservice
+    - name: platformservice
       protocol: TCP
       port: 80
       targetPort: 80

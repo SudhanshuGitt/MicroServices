@@ -8,7 +8,7 @@ WORKDIR /app
 # we need to copy all the packages to the 
 COPY *.csproj ./
 # pull down the packages in csproj files
-RUn dotnet restore
+RUN dotnet restore
 
 COPY . ./
 RUN dotnet build "PlatformService.csproj" -c Release -o out
